@@ -19,13 +19,6 @@
   #CentOS6.x用ownCloudレポジトリのインストール。
     get_url: url=http://download.opensuse.org/repositories/isv:ownCloud:community/CentOS_CentOS-7/isv:ownCloud:community.repo dest=/etc/yum.repos.d/
 
-  - name: Install OS packages
-    yum: name=emacs.x86_64 git-all.noarch state=present
-    
-  - name: Uninstall OLD DataBase packages
-  # 古いMySQLをアンインストール。
-    yum: name=mysql-* state=absent
-    
   - name: Install Apache packages
   # Apache をインストール。
     yum: name=httpd state=present
@@ -49,9 +42,14 @@
       
   - name: Install MariaDB
   # MariaDBをインストール。
-    yum: mariadb-server state=present
+    yum: name="{{ item }}" state=present
+    with_items:
+      - mariadb-server
+      - mariadb
+      - mariadb-libs
+      - MySQL-python
 
-  - name: restart mysqld 
+  - name: restart mariadb 
   # MariaDBの起動
     service: name=mariadb state=started
 
@@ -152,6 +150,6 @@
   # Apacheの再起動
     service: name=httpd state=restarted enabled=yes
 
-  - name: restart mysqld 
-  # MySQLの再起動
-    service: name=mysqld state=restarted enabled=yes
+  - name: restart mariadb
+  # MariaDBの再起動
+    service: name=mariadb state=restarted enabled=yes
