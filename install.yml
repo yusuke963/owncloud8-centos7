@@ -12,7 +12,7 @@
 
   tasks:
   - name: Install ownCloud reopsitory
-  #CentOS6.x用ownCloudレポジトリのインストール。
+  #CentOS7.x用ownCloudレポジトリのインストール。
     get_url: url=http://download.opensuse.org/repositories/isv:ownCloud:community/CentOS_CentOS-7/isv:ownCloud:community.repo dest=/etc/yum.repos.d/
 
   - name: Install Apache packages
@@ -62,7 +62,7 @@
 
   - name: Install ownCloud
   # ownCloudのインストール。
-    yum: name=owncloud state=present
+    yum: name=owncloud state=present enablerepo=isv_ownCloud_community
 
   - name: Make owncloud data dir
   # ownCloud用データ領域の作成
